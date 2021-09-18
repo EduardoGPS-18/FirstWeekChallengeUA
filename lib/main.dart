@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:perguntados/pages/pages.dart';
+
+import 'pages/pages.dart';
 
 void main() {
   runApp(const MyApp());

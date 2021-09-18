@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:perguntados/pages/pages.dart';
-import 'package:perguntados/widgets/shared/buttons/custom_button.dart';
+
+import '../../../widgets/shared/buttons/custom_button.dart';
+import '../../pages.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
