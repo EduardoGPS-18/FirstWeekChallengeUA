@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:perguntados/widgets/shared/custom_app_bar.dart';
+import 'package:perguntados/widgets/shared/appbar/custom_app_bar.dart';
 
 class PageWithCenterCard extends StatelessWidget {
   const PageWithCenterCard({Key? key, required this.children}) : super(key: key);
