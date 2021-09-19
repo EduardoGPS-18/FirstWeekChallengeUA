@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+import '../../../data/dummy_data/quest_list.dart';
 import '../../pages.dart';
 
 class ResultPage extends StatelessWidget {
@@ -17,7 +18,7 @@ class ResultPage extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 26,
-            color: Colors.blue,
+            color: Color(0xff758CFF),
           ),
         ),
         const Text(
@@ -28,20 +29,19 @@ class ResultPage extends StatelessWidget {
           textAlign: TextAlign.justify,
         ),
         Text(
-          "$result/10 Acertos",
+          "$result/${questions.length} Acertos",
           style: const TextStyle(
             fontSize: 32,
           ),
           textAlign: TextAlign.justify,
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => const HomePage()), (route) => false);
+          },
           child: const Text(
             "Tentar novamente",
-            style: TextStyle(
-              decoration: TextDecoration.underline,
-              fontSize: 18,
-            ),
+            style: TextStyle(decoration: TextDecoration.underline, fontSize: 18, color: Color(0xff758CFF)),
           ),
         ),
       ],

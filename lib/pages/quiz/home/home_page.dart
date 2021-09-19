@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../data/dummy_data/quest_list.dart';
 import '../../../widgets/shared/buttons/custom_button.dart';
 import '../../pages.dart';
 
@@ -16,12 +17,12 @@ class HomePage extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 26,
-            color: Colors.blue,
+            color: Color(0xff758CFF),
           ),
         ),
-        const Text(
-          "Responda 10 perguntas e veja sua pontuação no final!",
-          style: TextStyle(
+        Text(
+          "Responda ${questions.length} perguntas e veja sua pontuação no final!",
+          style: const TextStyle(
             fontSize: 18,
           ),
           textAlign: TextAlign.justify,
@@ -30,7 +31,9 @@ class HomePage extends StatelessWidget {
           builder: (ctx, constraints) => SizedBox(
             width: constraints.maxWidth,
             child: CustomButtom(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (_) => const QuestionPage()));
+              },
               text: "Start!",
             ),
           ),

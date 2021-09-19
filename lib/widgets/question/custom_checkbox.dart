@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 class CustomCheckBox extends StatefulWidget {
   final Color? backgroundColor, iconColor;
   final IconData? icon;
-  final bool selected;
+  final bool selected, active;
   final void Function(bool) onClick;
 
   const CustomCheckBox({
     Key? key,
+    required this.active,
     required this.backgroundColor,
     required this.icon,
     required this.iconColor,
@@ -23,9 +24,11 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        widget.onClick(widget.selected);
-      },
+      onTap: widget.active
+          ? () {
+              widget.onClick(widget.selected);
+            }
+          : null,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),

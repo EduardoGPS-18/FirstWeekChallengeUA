@@ -6,6 +6,7 @@ import '../../../widgets/question/header_question.dart';
 import '../../../widgets/question/response_button.dart';
 import '../../../widgets/shared/appbar/custom_app_bar.dart';
 import '../../../widgets/shared/buttons/custom_button.dart';
+import '../../pages.dart';
 
 class QuestionPage extends StatefulWidget {
   const QuestionPage({Key? key}) : super(key: key);
@@ -16,15 +17,23 @@ class QuestionPage extends StatefulWidget {
 
 class _QuestionPageState extends State<QuestionPage> {
   int currentPage = 0;
-  List<int> responses = List.filled(10, -1);
-  List<bool> selectedIndexOfCurrentPage = List.filled(4, false);
-  List<bool> isConfirmed = List.filled(10, false);
-  List<ResponseButton> buttons = [];
+  List<int> responses = List.filled(questions.length, -1);
+  List<bool> isConfirmed = List.filled(questions.length, false);
+  int score = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(),
+      appBar: CustomAppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new),
+          onPressed: () {
+            setState(() {
+              currentPage - 1 >= 0 ? currentPage-- : Navigator.pop(context);
+            });
+          },
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -43,29 +52,20 @@ class _QuestionPageState extends State<QuestionPage> {
                         height: constraints.maxHeight * 2 / 100,
                       ),
                       itemCount: 4,
-                      itemBuilder: (ctx, currentIndex) {
-                        ResponseButton currentButton = ResponseButton(
-                          constraints: constraints,
-                          isRight: currentIndex == 3,
-                          selected: selectedIndexOfCurrentPage[currentIndex],
-                          isConfirmed: isConfirmed[currentPage],
-                          onChange: isConfirmed[currentPage]
-                              ? (v) {}
-                              : (val) {
-                                  setState(() {
-                                    for (int i = 0; i < selectedIndexOfCurrentPage.length; i++) {
-                                      selectedIndexOfCurrentPage[i] = false;
-                                    }
-
-                                    selectedIndexOfCurrentPage[currentIndex] = true;
-                                    responses[currentPage] = currentIndex;
-                                  });
-                                },
-                          titleResponse: questions[currentPage].listTitleResult[currentIndex],
-                        );
-                        buttons.add(currentButton);
-                        return currentButton;
-                      },
+                      itemBuilder: (ctx, currentIndex) => ResponseButton(
+                        constraints: constraints,
+                        isRight: questions[currentPage].correctIndex == currentIndex,
+                        selected: responses[currentPage] == currentIndex,
+                        isConfirmed: isConfirmed[currentPage],
+                        onChange: isConfirmed[currentPage]
+                            ? (_) {}
+                            : (_) {
+                                setState(() {
+                                  responses[currentPage] = currentIndex;
+                                });
+                              },
+                        titleResponse: questions[currentPage].listTitleResult[currentIndex],
+                      ),
                     ),
                   ),
                 ),
@@ -79,9 +79,18 @@ class _QuestionPageState extends State<QuestionPage> {
                     onPressed: responses[currentPage] == -1
                         ? null
                         : isConfirmed[currentPage]
-                            ? () {}
+                            ? currentPage + 1 > questions.length - 1
+                                ? () {
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => ResultPage(result: score)));
+                                  }
+                                : () {
+                                    setState(() {
+                                      currentPage++;
+                                    });
+                                  }
                             : () {
                                 setState(() {
+                                  score = questions[currentPage].correctIndex == responses[currentPage] ? score + 1 : score + 0;
                                   isConfirmed[currentPage] = true;
                                 });
                               },

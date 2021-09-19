@@ -30,29 +30,29 @@ class _ResponseButtonState extends State<ResponseButton> {
     bool isSelectedAndConfirmedAndRight = widget.selected && widget.isConfirmed && widget.isRight;
     bool isSelectedAndConfirmedAndWrong = widget.selected && widget.isConfirmed && !widget.isRight;
     bool isNotSelectedAndConfirmedAndRight = !widget.selected && widget.isConfirmed && widget.isRight;
-    bool isSelectedOnly = widget.selected;
+    bool isSelectedOnly = widget.selected && !widget.isConfirmed;
 
     return Container(
       height: widget.constraints.maxHeight * 23 / 100,
       decoration: BoxDecoration(
         color: isSelectedAndConfirmedAndRight
-            ? Colors.green[100]
+            ? Color(0xffE5FFE6)
             : isSelectedAndConfirmedAndWrong
-                ? Colors.red[100]
+                ? Color(0xffFFD6D6)
                 : isNotSelectedAndConfirmedAndRight
-                    ? Colors.green[100]
+                    ? Color(0xffE5FFE6)
                     : isSelectedOnly
-                        ? Colors.blue[100]
+                        ? Color(0xffE5E9FF)
                         : Colors.white,
         border: Border.all(
           color: isSelectedAndConfirmedAndRight
-              ? Colors.green
+              ? Color(0xff5CC772)
               : isSelectedAndConfirmedAndWrong
-                  ? Colors.red
+                  ? Color(0xffFF5C5C)
                   : isNotSelectedAndConfirmedAndRight
-                      ? Colors.green
+                      ? Color(0xff38C53D)
                       : isSelectedOnly
-                          ? Colors.blue
+                          ? Color(0xff758CFF)
                           : Colors.grey,
           width: 0.5,
         ),
@@ -69,20 +69,21 @@ class _ResponseButtonState extends State<ResponseButton> {
             child: Padding(
               padding: const EdgeInsets.all(5),
               child: CustomCheckBox(
-                icon: isSelectedAndConfirmedAndRight || isNotSelectedAndConfirmedAndRight
+                active: !widget.isConfirmed,
+                icon: isSelectedAndConfirmedAndRight || isNotSelectedAndConfirmedAndRight || isSelectedOnly
                     ? Icons.check
                     : isSelectedAndConfirmedAndWrong
                         ? Icons.close
                         : null,
                 iconColor: Colors.white,
                 backgroundColor: isSelectedAndConfirmedAndRight
-                    ? Colors.green
+                    ? Color(0xff38C53D)
                     : isSelectedAndConfirmedAndWrong
-                        ? Colors.red
+                        ? Color(0xffFF5A5A)
                         : isNotSelectedAndConfirmedAndRight
-                            ? Colors.green
+                            ? Color(0xff38C53D)
                             : isSelectedOnly
-                                ? Colors.blue
+                                ? Color(0xff758CFF)
                                 : Colors.white,
                 selected: widget.selected,
                 onClick: (val) {
@@ -101,13 +102,13 @@ class _ResponseButtonState extends State<ResponseButton> {
               style: TextStyle(
                 fontSize: 24,
                 color: isSelectedAndConfirmedAndRight
-                    ? Colors.green
+                    ? Color(0xff38C53D)
                     : isSelectedAndConfirmedAndWrong
-                        ? Colors.red
+                        ? Color(0xffFF5B5B)
                         : isNotSelectedAndConfirmedAndRight
-                            ? Colors.green
+                            ? Color(0xff43C54F)
                             : isSelectedOnly
-                                ? Colors.blue
+                                ? Color(0xff758CFF)
                                 : Colors.black,
                 fontWeight: FontWeight.bold,
               ),
