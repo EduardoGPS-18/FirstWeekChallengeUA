@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../widgets/question/header_question.dart';
+import '../../../widgets/question/response_button.dart';
 import '../../../widgets/shared/appbar/custom_app_bar.dart';
 import '../../../widgets/shared/buttons/custom_button.dart';
 
@@ -12,7 +14,11 @@ class QuestionPage extends StatefulWidget {
 }
 
 class _QuestionPageState extends State<QuestionPage> {
-  bool val = false;
+  int currentPage = 0;
+  List<int> responses = List.filled(10, -1);
+  List<bool> selectedIndexOfCurrentPage = List.filled(4, false);
+  List<bool> isConfirmed = List.filled(10, false);
+  List<ResponseButton> buttons = [];
 
   @override
   Widget build(BuildContext context) {
@@ -24,30 +30,11 @@ class _QuestionPageState extends State<QuestionPage> {
           child: LayoutBuilder(builder: (context, constraints) {
             return Column(
               children: [
-                Container(
-                  color: Colors.amber,
-                  height: constraints.maxHeight * 27 / 100,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        "Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum ",
-                        style: TextStyle(
-                          fontSize: 22,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 18),
-                        child: Text(
-                          "Respostas",
-                          style: TextStyle(fontSize: 22, color: Colors.blue),
-                        ),
-                      ),
-                    ],
-                  ),
+                HeaderQuestion(
+                  constraints: constraints,
+                  title: "Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum  Lorem ipsum Lorem ipsum ",
                 ),
-                Container(
-                  color: Colors.black12,
+                SizedBox(
                   height: constraints.maxHeight * 58 / 100,
                   child: LayoutBuilder(
                     builder: (context, constraints) => ListView.separated(
@@ -55,35 +42,28 @@ class _QuestionPageState extends State<QuestionPage> {
                         height: constraints.maxHeight * 2 / 100,
                       ),
                       itemCount: 4,
-                      itemBuilder: (ctx, i) => Container(
-                        height: constraints.maxHeight * 23 / 100,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey, width: 0.5),
-                          borderRadius: BorderRadius.circular(26),
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: constraints.maxHeight * 2 / 100),
-                              child: Checkbox(
-                                value: val,
-                                onChanged: (v) {},
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: constraints.maxHeight * 2.8 / 100),
-                              child: const Text(
-                                "Texto",
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      itemBuilder: (ctx, currentIndex) {
+                        ResponseButton currentButton = ResponseButton(
+                          constraints: constraints,
+                          isRight: currentIndex == 3,
+                          selected: selectedIndexOfCurrentPage[currentIndex],
+                          isConfirmed: isConfirmed[currentPage],
+                          onChange: isConfirmed[currentPage]
+                              ? (v) {}
+                              : (val) {
+                                  setState(() {
+                                    for (int i = 0; i < selectedIndexOfCurrentPage.length; i++) {
+                                      selectedIndexOfCurrentPage[i] = false;
+                                    }
+
+                                    selectedIndexOfCurrentPage[currentIndex] = true;
+                                    responses[currentPage] = currentIndex;
+                                  });
+                                },
+                        );
+                        buttons.add(currentButton);
+                        return currentButton;
+                      },
                     ),
                   ),
                 ),
@@ -93,8 +73,16 @@ class _QuestionPageState extends State<QuestionPage> {
                 SizedBox(
                   width: constraints.maxWidth,
                   child: CustomButtom(
-                    text: "Responder",
-                    onPressed: () {},
+                    text: isConfirmed[currentPage] ? "Proxima pergunta" : "Responder",
+                    onPressed: responses[currentPage] == -1
+                        ? null
+                        : isConfirmed[currentPage]
+                            ? () {}
+                            : () {
+                                setState(() {
+                                  isConfirmed[currentPage] = true;
+                                });
+                              },
                   ),
                 ),
                 SizedBox(
