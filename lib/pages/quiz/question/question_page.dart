@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../data/dummy_data/quest_list.dart';
 import '../../../widgets/question/header_question.dart';
 import '../../../widgets/question/response_button.dart';
 import '../../../widgets/shared/appbar/custom_app_bar.dart';
@@ -32,7 +33,7 @@ class _QuestionPageState extends State<QuestionPage> {
               children: [
                 HeaderQuestion(
                   constraints: constraints,
-                  title: "Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum  Lorem ipsum Lorem ipsum ",
+                  title: questions[currentPage].title,
                 ),
                 SizedBox(
                   height: constraints.maxHeight * 58 / 100,
@@ -60,6 +61,7 @@ class _QuestionPageState extends State<QuestionPage> {
                                     responses[currentPage] = currentIndex;
                                   });
                                 },
+                          titleResponse: questions[currentPage].listTitleResult[currentIndex],
                         );
                         buttons.add(currentButton);
                         return currentButton;

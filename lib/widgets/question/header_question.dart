@@ -13,6 +13,7 @@ class HeaderQuestion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      width: constraints.maxWidth,
       height: constraints.maxHeight * 27 / 100,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

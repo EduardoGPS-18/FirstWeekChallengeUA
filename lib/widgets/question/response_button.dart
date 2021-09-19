@@ -8,6 +8,8 @@ class ResponseButton extends StatefulWidget {
   final void Function(bool?) onChange;
   final bool isRight;
   final bool isConfirmed;
+  final String titleResponse;
+
   const ResponseButton({
     Key? key,
     required this.constraints,
@@ -15,6 +17,7 @@ class ResponseButton extends StatefulWidget {
     required this.selected,
     required this.isRight,
     required this.isConfirmed,
+    required this.titleResponse,
   }) : super(key: key);
 
   @override
@@ -94,7 +97,7 @@ class _ResponseButtonState extends State<ResponseButton> {
               left: widget.constraints.maxHeight * 2 / 100,
             ),
             child: Text(
-              "Texto",
+              widget.titleResponse,
               style: TextStyle(
                 fontSize: 24,
                 color: isSelectedAndConfirmedAndRight
