@@ -110,7 +110,6 @@ class _ResponseButtonState extends State<ResponseButton> {
                             : isSelectedOnly
                                 ? Color(0xff758CFF)
                                 : Colors.black,
-                fontWeight: FontWeight.bold,
               ),
             ),
           ),

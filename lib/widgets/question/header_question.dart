@@ -30,7 +30,7 @@ class HeaderQuestion extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 18),
             child: Text(
               "Respostas",
-              style: TextStyle(fontSize: 22, color: Colors.blue),
+              style: TextStyle(fontSize: 22, color: Color(0xff758CFF)),
             ),
           ),
         ],
