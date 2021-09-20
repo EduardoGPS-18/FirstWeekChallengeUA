@@ -17,6 +17,7 @@ class HeaderQuestion extends StatelessWidget {
       height: constraints.maxHeight * 27 / 100,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(
             title,
@@ -26,11 +27,15 @@ class HeaderQuestion extends StatelessWidget {
               fontSize: 22,
             ),
           ),
+          const Expanded(child: Center()),
           const Padding(
-            padding: EdgeInsets.symmetric(vertical: 18),
+            padding: EdgeInsets.only(bottom: 12, top: 12),
             child: Text(
               "Respostas",
-              style: TextStyle(fontSize: 22, color: Color(0xff758CFF)),
+              style: TextStyle(
+                fontSize: 22,
+                color: Color(0xff758CFF),
+              ),
             ),
           ),
         ],
