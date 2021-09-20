@@ -19,7 +19,7 @@ class CustomButtom extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 14),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(24),
+            Radius.circular(32),
           ),
         ),
       ),

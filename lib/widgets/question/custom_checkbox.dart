@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomCheckBox extends StatefulWidget {
   final Color? backgroundColor, iconColor;
+  final Color borderColor;
   final IconData? icon;
   final bool selected, active;
   final void Function(bool) onClick;
@@ -13,6 +14,7 @@ class CustomCheckBox extends StatefulWidget {
     required this.icon,
     required this.iconColor,
     required this.selected,
+    required this.borderColor,
     required this.onClick,
   }) : super(key: key);
 
@@ -33,7 +35,7 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           border: Border.all(
-            color: widget.selected ? Colors.blue : Colors.grey,
+            color: widget.borderColor,
           ),
           color: widget.backgroundColor,
         ),
