@@ -61,7 +61,7 @@ class _ResponseButtonState extends State<ResponseButton> {
                     ? const Color(0xff758CFF)
                     : Colors.white;
 
-    final Color textColor = isSelectedAndConfirmedAndRight
+    final Color textAndBorderColor = isSelectedAndConfirmedAndRight
         ? const Color(0xff38C53D)
         : isSelectedAndConfirmedAndWrong
             ? const Color(0xffFF5B5B)
@@ -91,6 +91,7 @@ class _ResponseButtonState extends State<ResponseButton> {
             child: Padding(
               padding: const EdgeInsets.all(5),
               child: CustomCheckBox(
+                borderColor: textAndBorderColor,
                 active: !widget.isConfirmed,
                 icon: isSelectedAndConfirmedAndRight || isNotSelectedAndConfirmedAndRight || isSelectedOnly
                     ? Icons.check
@@ -116,7 +117,7 @@ class _ResponseButtonState extends State<ResponseButton> {
               widget.titleResponse,
               style: TextStyle(
                 fontSize: 22,
-                color: textColor,
+                color: textAndBorderColor,
               ),
             ),
           ),
