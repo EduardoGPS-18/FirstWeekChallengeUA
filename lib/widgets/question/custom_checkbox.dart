@@ -39,9 +39,10 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
           ),
           color: widget.backgroundColor,
         ),
-        height: 20,
-        width: 20,
-        child: Center(
+        height: 22,
+        width: 22,
+        child: Align(
+          alignment: const Alignment(-1, -1),
           child: Icon(
             widget.icon,
             size: 20,
