@@ -12,7 +12,7 @@ class PageWithCenterCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(),
-      backgroundColor: Colors.lightBlue[50],
+      backgroundColor: const Color(0xFFE5E9FF),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) => SizedBox(
