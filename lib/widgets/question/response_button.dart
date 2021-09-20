@@ -32,28 +32,50 @@ class _ResponseButtonState extends State<ResponseButton> {
     bool isNotSelectedAndConfirmedAndRight = !widget.selected && widget.isConfirmed && widget.isRight;
     bool isSelectedOnly = widget.selected && !widget.isConfirmed;
 
+    final Color backgroundColor = isSelectedAndConfirmedAndRight
+        ? const Color(0xffE5FFE6)
+        : isSelectedAndConfirmedAndWrong
+            ? const Color(0xffFFD6D6)
+            : isNotSelectedAndConfirmedAndRight
+                ? const Color(0xffE5FFE6)
+                : isSelectedOnly
+                    ? const Color(0xffE5E9FF)
+                    : Colors.white;
+    final Color borderColor = isSelectedAndConfirmedAndRight
+        ? const Color(0xff5CC772)
+        : isSelectedAndConfirmedAndWrong
+            ? const Color(0xffFF5C5C)
+            : isNotSelectedAndConfirmedAndRight
+                ? const Color(0xff38C53D)
+                : isSelectedOnly
+                    ? const Color(0xff758CFF)
+                    : Colors.grey;
+
+    final Color checkBoxColor = isSelectedAndConfirmedAndRight
+        ? const Color(0xff38C53D)
+        : isSelectedAndConfirmedAndWrong
+            ? const Color(0xffFF5A5A)
+            : isNotSelectedAndConfirmedAndRight
+                ? const Color(0xff38C53D)
+                : isSelectedOnly
+                    ? const Color(0xff758CFF)
+                    : Colors.white;
+
+    final Color textColor = isSelectedAndConfirmedAndRight
+        ? const Color(0xff38C53D)
+        : isSelectedAndConfirmedAndWrong
+            ? const Color(0xffFF5B5B)
+            : isNotSelectedAndConfirmedAndRight
+                ? const Color(0xff43C54F)
+                : isSelectedOnly
+                    ? const Color(0xff758CFF)
+                    : Colors.black;
     return Container(
       height: widget.constraints.maxHeight * 23 / 100,
       decoration: BoxDecoration(
-        color: isSelectedAndConfirmedAndRight
-            ? Color(0xffE5FFE6)
-            : isSelectedAndConfirmedAndWrong
-                ? Color(0xffFFD6D6)
-                : isNotSelectedAndConfirmedAndRight
-                    ? Color(0xffE5FFE6)
-                    : isSelectedOnly
-                        ? Color(0xffE5E9FF)
-                        : Colors.white,
+        color: backgroundColor,
         border: Border.all(
-          color: isSelectedAndConfirmedAndRight
-              ? Color(0xff5CC772)
-              : isSelectedAndConfirmedAndWrong
-                  ? Color(0xffFF5C5C)
-                  : isNotSelectedAndConfirmedAndRight
-                      ? Color(0xff38C53D)
-                      : isSelectedOnly
-                          ? Color(0xff758CFF)
-                          : Colors.grey,
+          color: borderColor,
           width: 0.5,
         ),
         borderRadius: BorderRadius.circular(26),
@@ -76,15 +98,7 @@ class _ResponseButtonState extends State<ResponseButton> {
                         ? Icons.close
                         : null,
                 iconColor: Colors.white,
-                backgroundColor: isSelectedAndConfirmedAndRight
-                    ? Color(0xff38C53D)
-                    : isSelectedAndConfirmedAndWrong
-                        ? Color(0xffFF5A5A)
-                        : isNotSelectedAndConfirmedAndRight
-                            ? Color(0xff38C53D)
-                            : isSelectedOnly
-                                ? Color(0xff758CFF)
-                                : Colors.white,
+                backgroundColor: checkBoxColor,
                 selected: widget.selected,
                 onClick: (val) {
                   widget.onChange(val);
@@ -92,24 +106,21 @@ class _ResponseButtonState extends State<ResponseButton> {
               ),
             ),
           ),
-          Padding(
+          Container(
             padding: EdgeInsets.only(
               top: widget.constraints.maxHeight * 2.8 / 100,
               left: widget.constraints.maxHeight * 2 / 100,
             ),
-            child: Text(
-              widget.titleResponse,
-              style: TextStyle(
-                fontSize: 24,
-                color: isSelectedAndConfirmedAndRight
-                    ? Color(0xff38C53D)
-                    : isSelectedAndConfirmedAndWrong
-                        ? Color(0xffFF5B5B)
-                        : isNotSelectedAndConfirmedAndRight
-                            ? Color(0xff43C54F)
-                            : isSelectedOnly
-                                ? Color(0xff758CFF)
-                                : Colors.black,
+            child: RichText(
+              softWrap: true,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              text: TextSpan(
+                text: widget.titleResponse,
+                style: TextStyle(
+                  fontSize: 22,
+                  color: textColor,
+                ),
               ),
             ),
           ),

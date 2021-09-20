@@ -41,7 +41,11 @@ class ResultPage extends StatelessWidget {
           },
           child: const Text(
             "Tentar novamente",
-            style: TextStyle(decoration: TextDecoration.underline, fontSize: 18, color: Color(0xff758CFF)),
+            style: TextStyle(
+              decoration: TextDecoration.underline,
+              fontSize: 18,
+              color: Color(0xff758CFF),
+            ),
           ),
         ),
       ],

@@ -36,7 +36,7 @@ class _QuestionPageState extends State<QuestionPage> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(18),
           child: LayoutBuilder(builder: (context, constraints) {
             return Column(
               children: [
@@ -70,7 +70,7 @@ class _QuestionPageState extends State<QuestionPage> {
                   ),
                 ),
                 SizedBox(
-                  height: constraints.maxHeight * 3 / 100,
+                  height: constraints.maxHeight * 5 / 100,
                 ),
                 SizedBox(
                   width: constraints.maxWidth,
@@ -79,25 +79,27 @@ class _QuestionPageState extends State<QuestionPage> {
                     onPressed: responses[currentPage] == -1
                         ? null
                         : isConfirmed[currentPage]
-                            ? currentPage + 1 > questions.length - 1
-                                ? () {
-                                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => ResultPage(result: score)));
-                                  }
-                                : () {
-                                    setState(() {
-                                      currentPage++;
-                                    });
-                                  }
+                            ? () {
+                                if (currentPage + 1 > questions.length - 1) {
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => ResultPage(result: score)));
+                                } else {
+                                  setState(() {
+                                    currentPage++;
+                                  });
+                                }
+                              }
                             : () {
-                                setState(() {
-                                  score = questions[currentPage].correctIndex == responses[currentPage] ? score + 1 : score + 0;
-                                  isConfirmed[currentPage] = true;
-                                });
+                                setState(
+                                  () {
+                                    score = questions[currentPage].correctIndex == responses[currentPage] ? score + 1 : score + 0;
+                                    isConfirmed[currentPage] = true;
+                                  },
+                                );
                               },
                   ),
                 ),
                 SizedBox(
-                  height: constraints.maxHeight * 3 / 100,
+                  height: constraints.maxHeight * 1 / 100,
                 ),
               ],
             );
