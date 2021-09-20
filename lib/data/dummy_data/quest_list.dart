@@ -2,16 +2,6 @@ import '../../entity/questions.dart';
 
 List<Question> questions = [
   Question(
-    title: "Os stateless widgets são: ",
-    listTitleResult: [
-      "Os widgets que são destinados a consumir uma API",
-      "Os widgets incapazes de conter um estado",
-      "Os widgets capazes de conter um estado",
-      "Os widgets que não são visíveis",
-    ],
-    correctIndex: 1,
-  ),
-  Question(
     title: "Dart é uma: ",
     listTitleResult: [
       "Linguagem de programação",
@@ -70,6 +60,16 @@ List<Question> questions = [
       "Todos",
     ],
     correctIndex: 3,
+  ),
+  Question(
+    title: "Os stateless widgets são: ",
+    listTitleResult: [
+      "Os widgets que são destinados a consumir uma API",
+      "Os widgets incapazes de conter um estado",
+      "Os widgets capazes de conter um estado",
+      "Os widgets que não são visíveis",
+    ],
+    correctIndex: 1,
   ),
   Question(
     title: "Importamos pacotes externos no flutter por meio do arquivo:",

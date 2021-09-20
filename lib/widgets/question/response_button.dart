@@ -107,20 +107,16 @@ class _ResponseButtonState extends State<ResponseButton> {
             ),
           ),
           Container(
+            width: widget.constraints.maxWidth * 88 / 100,
             padding: EdgeInsets.only(
-              top: widget.constraints.maxHeight * 2.8 / 100,
-              left: widget.constraints.maxHeight * 2 / 100,
+              top: widget.constraints.maxHeight * 2 / 100,
+              left: widget.constraints.maxHeight * 0.7 / 100,
             ),
-            child: RichText(
-              softWrap: true,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              text: TextSpan(
-                text: widget.titleResponse,
-                style: TextStyle(
-                  fontSize: 22,
-                  color: textColor,
-                ),
+            child: Text(
+              widget.titleResponse,
+              style: TextStyle(
+                fontSize: 22,
+                color: textColor,
               ),
             ),
           ),
