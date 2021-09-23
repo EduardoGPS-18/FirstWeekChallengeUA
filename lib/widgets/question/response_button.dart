@@ -2,17 +2,31 @@ import 'package:flutter/material.dart';
 
 import 'custom_checkbox.dart';
 
+enum _ButtonState { unSelected, isSelected, isConfirmedRight, isConfirmedWrong }
+
+class _ResponseButtonColorScheme {
+  final Color? backgroundColor;
+  final Color? checkboxColor;
+  final Color borderColor;
+  final Color textAndBorderColor;
+
+  _ResponseButtonColorScheme({
+    required this.backgroundColor,
+    required this.borderColor,
+    required this.checkboxColor,
+    required this.textAndBorderColor,
+  });
+}
+
 class ResponseButton extends StatefulWidget {
-  final BoxConstraints constraints;
   final bool selected;
-  final void Function(bool?) onChange;
+  final void Function(bool)? onChange;
   final bool isRight;
   final bool isConfirmed;
   final String titleResponse;
 
   const ResponseButton({
     Key? key,
-    required this.constraints,
     required this.onChange,
     required this.selected,
     required this.isRight,
@@ -25,57 +39,62 @@ class ResponseButton extends StatefulWidget {
 }
 
 class _ResponseButtonState extends State<ResponseButton> {
+  final Map<_ButtonState, _ResponseButtonColorScheme> _responseButtonColorScheme = {
+    _ButtonState.unSelected: _ResponseButtonColorScheme(
+      backgroundColor: const Color(0xFFFFFFFF),
+      borderColor: const Color(0xFF9E9E9E),
+      checkboxColor: const Color(0xFFFFFFFF),
+      textAndBorderColor: const Color(0xFF000000),
+    ),
+    _ButtonState.isSelected: _ResponseButtonColorScheme(
+      backgroundColor: const Color(0xffE5E9FF),
+      borderColor: const Color(0xff758CFF),
+      checkboxColor: const Color(0xff758CFF),
+      textAndBorderColor: const Color(0xff758CFF),
+    ),
+    _ButtonState.isConfirmedRight: _ResponseButtonColorScheme(
+      backgroundColor: const Color(0xffE5FFE6),
+      borderColor: const Color(0xff5CC772),
+      checkboxColor: const Color(0xff38C53D),
+      textAndBorderColor: const Color(0xff43C54F),
+    ),
+    _ButtonState.isConfirmedWrong: _ResponseButtonColorScheme(
+      backgroundColor: const Color(0xffFFD6D6),
+      borderColor: const Color(0xffFF5C5C),
+      checkboxColor: const Color(0xffFF5A5A),
+      textAndBorderColor: const Color(0xffFF5B5B),
+    ),
+  };
+
   @override
   Widget build(BuildContext context) {
-    bool isSelectedAndConfirmedAndRight = widget.selected && widget.isConfirmed && widget.isRight;
-    bool isSelectedAndConfirmedAndWrong = widget.selected && widget.isConfirmed && !widget.isRight;
-    bool isNotSelectedAndConfirmedAndRight = !widget.selected && widget.isConfirmed && widget.isRight;
+    bool isConfirmedAndRight = widget.selected && widget.isConfirmed && widget.isRight;
+    bool isConfirmedAndWrong = widget.selected && widget.isConfirmed && !widget.isRight;
+    bool isNotSelectedConfirmedAndRight = !widget.selected && widget.isConfirmed && widget.isRight;
     bool isSelectedOnly = widget.selected && !widget.isConfirmed;
 
-    final Color backgroundColor = isSelectedAndConfirmedAndRight
-        ? const Color(0xffE5FFE6)
-        : isSelectedAndConfirmedAndWrong
-            ? const Color(0xffFFD6D6)
-            : isNotSelectedAndConfirmedAndRight
-                ? const Color(0xffE5FFE6)
-                : isSelectedOnly
-                    ? const Color(0xffE5E9FF)
-                    : Colors.white;
-    final Color borderColor = isSelectedAndConfirmedAndRight
-        ? const Color(0xff5CC772)
-        : isSelectedAndConfirmedAndWrong
-            ? const Color(0xffFF5C5C)
-            : isNotSelectedAndConfirmedAndRight
-                ? const Color(0xff38C53D)
-                : isSelectedOnly
-                    ? const Color(0xff758CFF)
-                    : Colors.grey;
+    _ButtonState _buttonState = isConfirmedAndRight
+        ? _ButtonState.isConfirmedRight
+        : isConfirmedAndWrong
+            ? _ButtonState.isConfirmedWrong
+            : isSelectedOnly
+                ? _ButtonState.isSelected
+                : isNotSelectedConfirmedAndRight
+                    ? _ButtonState.isConfirmedRight
+                    : _ButtonState.unSelected;
 
-    final Color checkBoxColor = isSelectedAndConfirmedAndRight
-        ? const Color(0xff38C53D)
-        : isSelectedAndConfirmedAndWrong
-            ? const Color(0xffFF5A5A)
-            : isNotSelectedAndConfirmedAndRight
-                ? const Color(0xff38C53D)
-                : isSelectedOnly
-                    ? const Color(0xff758CFF)
-                    : Colors.white;
+    IconData? icon = isConfirmedAndWrong
+        ? Icons.close
+        : isConfirmedAndRight || isNotSelectedConfirmedAndRight || isSelectedOnly
+            ? Icons.check
+            : null;
 
-    final Color textAndBorderColor = isSelectedAndConfirmedAndRight
-        ? const Color(0xff38C53D)
-        : isSelectedAndConfirmedAndWrong
-            ? const Color(0xffFF5B5B)
-            : isNotSelectedAndConfirmedAndRight
-                ? const Color(0xff43C54F)
-                : isSelectedOnly
-                    ? const Color(0xff758CFF)
-                    : Colors.black;
     return Container(
-      height: widget.constraints.maxHeight * 23 / 100,
+      padding: const EdgeInsets.only(left: 8, top: 8),
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: _responseButtonColorScheme[_buttonState]?.backgroundColor,
         border: Border.all(
-          color: borderColor,
+          color: _responseButtonColorScheme[_buttonState]!.borderColor,
           width: 0.5,
         ),
         borderRadius: BorderRadius.circular(26),
@@ -83,42 +102,34 @@ class _ResponseButtonState extends State<ResponseButton> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: EdgeInsets.only(
-              top: widget.constraints.maxHeight * 2 / 100,
-              left: widget.constraints.maxHeight * 2 / 100,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(5),
-              child: CustomCheckBox(
-                borderColor: textAndBorderColor,
-                active: !widget.isConfirmed,
-                icon: isSelectedAndConfirmedAndRight || isNotSelectedAndConfirmedAndRight || isSelectedOnly
-                    ? Icons.check
-                    : isSelectedAndConfirmedAndWrong
-                        ? Icons.close
-                        : null,
-                iconColor: Colors.white,
-                backgroundColor: checkBoxColor,
-                selected: widget.selected,
-                onClick: (val) {
-                  widget.onChange(val);
-                },
-              ),
+          Container(
+            padding: const EdgeInsets.only(left: 4, right: 8),
+            child: CustomCheckBox(
+              borderColor: _responseButtonColorScheme[_buttonState]!.textAndBorderColor,
+              active: !widget.isConfirmed,
+              icon: icon,
+              iconColor: Colors.white,
+              backgroundColor: _responseButtonColorScheme[_buttonState]!.checkboxColor,
+              selected: widget.selected,
+              onClick: widget.onChange != null ? (value) => widget.onChange!(value) : null,
             ),
           ),
-          Container(
-            width: widget.constraints.maxWidth * 88 / 100,
-            padding: EdgeInsets.only(
-              top: widget.constraints.maxHeight * 2 / 100,
-              left: widget.constraints.maxHeight * 0.7 / 100,
-            ),
-            child: Text(
-              widget.titleResponse,
-              style: TextStyle(
-                fontSize: 22,
-                color: textAndBorderColor,
-              ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 7.8 / 10,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Text(
+                  widget.titleResponse,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: _responseButtonColorScheme[_buttonState]!.textAndBorderColor,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
