@@ -32,7 +32,7 @@ class _QuestionPageState extends State<QuestionPage> {
         _pageController.animateToPage(
           _pageController.page!.toInt() - 1,
           duration: const Duration(milliseconds: 500),
-          curve: Curves.decelerate,
+          curve: Curves.easeIn,
         );
       } else {
         Navigator.pop(context);
@@ -44,7 +44,11 @@ class _QuestionPageState extends State<QuestionPage> {
     if (_pageController.page!.toInt() + 1 > questions.length - 1) {
       Navigator.of(context).push(MaterialPageRoute(builder: (_) => ResultPage(result: score)));
     } else {
-      _pageController.animateToPage(_pageController.page!.toInt() + 1, duration: const Duration(milliseconds: 500), curve: Curves.decelerate);
+      _pageController.animateToPage(
+        _pageController.page!.toInt() + 1,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeIn,
+      );
     }
   }
 
