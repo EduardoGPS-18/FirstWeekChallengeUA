@@ -7,6 +7,10 @@ import '../../pages.dart';
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
+  void navigateToQuestionsPage(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) => const QuestionPage()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return PageWithCenterCard(
@@ -27,15 +31,11 @@ class HomePage extends StatelessWidget {
           ),
           textAlign: TextAlign.justify,
         ),
-        LayoutBuilder(
-          builder: (ctx, constraints) => SizedBox(
-            width: constraints.maxWidth,
-            child: CustomButtom(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (_) => const QuestionPage()));
-              },
-              text: "Start!",
-            ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: CustomButtom(
+            onPressed: () => navigateToQuestionsPage(context),
+            text: "Start!",
           ),
         ),
       ],
