@@ -2,10 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/dummy_data/quest_list.dart';
-import '../../../widgets/question/header_question.dart';
-import '../../../widgets/question/response_button.dart';
-import '../../../widgets/shared/appbar/custom_app_bar.dart';
-import '../../../widgets/shared/buttons/custom_button.dart';
+import '../../../widgets/question/question.dart';
+import '../../../widgets/shared/shared_widgets.dart';
 import '../../pages.dart';
 
 class QuestionPage extends StatefulWidget {
@@ -16,10 +14,54 @@ class QuestionPage extends StatefulWidget {
 }
 
 class _QuestionPageState extends State<QuestionPage> {
-  int currentPage = 0;
-  List<int> responses = List.filled(questions.length, -1);
-  List<bool> isConfirmed = List.filled(questions.length, false);
+  late final PageController _pageController;
+  final List<int> responses = List.filled(questions.length, -1);
+  final List<bool> isConfirmed = List.filled(questions.length, false);
   int score = 0;
+
+  @override
+  void initState() {
+    _pageController = PageController();
+
+    super.initState();
+  }
+
+  void navigateToPreviousPage() {
+    setState(() {
+      if (_pageController.page!.toInt() - 1 >= 0) {
+        _pageController.animateToPage(
+          _pageController.page!.toInt() - 1,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.decelerate,
+        );
+      } else {
+        Navigator.pop(context);
+      }
+    });
+  }
+
+  void navigateToNextOrResultPage() {
+    if (_pageController.page!.toInt() + 1 > questions.length - 1) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (_) => ResultPage(result: score)));
+    } else {
+      _pageController.animateToPage(_pageController.page!.toInt() + 1, duration: const Duration(milliseconds: 500), curve: Curves.decelerate);
+    }
+  }
+
+  void setResponse(int currentIndex) {
+    setState(() {
+      responses[_pageController.page!.toInt()] = currentIndex;
+    });
+  }
+
+  void confirmQuestion() {
+    setState(
+      () {
+        score = questions[_pageController.page!.toInt()].correctIndex == responses[_pageController.page!.toInt()] ? score + 1 : score + 0;
+        isConfirmed[_pageController.page!.toInt()] = true;
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,84 +69,69 @@ class _QuestionPageState extends State<QuestionPage> {
       appBar: CustomAppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new),
-          onPressed: () {
-            setState(() {
-              currentPage - 1 >= 0 ? currentPage-- : Navigator.pop(context);
-            });
-          },
+          onPressed: navigateToPreviousPage,
         ),
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(18),
-          child: LayoutBuilder(builder: (context, constraints) {
-            return Column(
-              children: [
-                HeaderQuestion(
-                  constraints: constraints,
-                  title: questions[currentPage].title,
-                ),
-                SizedBox(
-                  height: constraints.maxHeight * 58 / 100,
-                  child: LayoutBuilder(
-                    builder: (context, constraints) => ListView.separated(
-                      separatorBuilder: (ctx, i) => SizedBox(
-                        height: constraints.maxHeight * 2 / 100,
+      body: PageView(
+        controller: _pageController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: [
+          for (int currentPage = 0; currentPage < questions.length; currentPage++)
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(18),
+                child: LayoutBuilder(builder: (context, constraints) {
+                  return Column(
+                    children: [
+                      SizedBox(
+                        height: constraints.maxHeight / 4.5,
+                        child: HeaderQuestion(
+                          title: questions[currentPage].title,
+                        ),
                       ),
-                      itemCount: 4,
-                      itemBuilder: (ctx, currentIndex) => ResponseButton(
-                        constraints: constraints,
-                        isRight: questions[currentPage].correctIndex == currentIndex,
-                        selected: responses[currentPage] == currentIndex,
-                        isConfirmed: isConfirmed[currentPage],
-                        onChange: isConfirmed[currentPage]
-                            ? (_) {}
-                            : (_) {
-                                setState(() {
-                                  responses[currentPage] = currentIndex;
-                                });
-                              },
-                        titleResponse: questions[currentPage].listTitleResult[currentIndex],
+                      SizedBox(
+                        height: constraints.maxHeight * 4 / 6,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            for (var i = 0; i < 4; i++)
+                              SizedBox(
+                                height: (constraints.maxHeight * 4 / 6) / 4.6,
+                                child: ResponseButton(
+                                  isRight: questions[currentPage].correctIndex == i,
+                                  selected: responses[currentPage] == i,
+                                  isConfirmed: isConfirmed[currentPage],
+                                  onChange: isConfirmed[currentPage] ? null : (_) => setResponse(i),
+                                  titleResponse: questions[currentPage].listTitleResult[i],
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: constraints.maxHeight * 5 / 100,
-                ),
-                SizedBox(
-                  width: constraints.maxWidth,
-                  child: CustomButtom(
-                    text: isConfirmed[currentPage] ? "Proxima pergunta" : "Responder",
-                    onPressed: responses[currentPage] == -1
-                        ? null
-                        : isConfirmed[currentPage]
-                            ? () {
-                                if (currentPage + 1 > questions.length - 1) {
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => ResultPage(result: score)));
-                                } else {
-                                  setState(() {
-                                    currentPage++;
-                                  });
-                                }
-                              }
-                            : () {
-                                setState(
-                                  () {
-                                    score = questions[currentPage].correctIndex == responses[currentPage] ? score + 1 : score + 0;
-                                    isConfirmed[currentPage] = true;
-                                  },
-                                );
-                              },
-                  ),
-                ),
-                SizedBox(
-                  height: constraints.maxHeight * 1 / 100,
-                ),
-              ],
-            );
-          }),
-        ),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            SizedBox(
+                              child: CustomButtom(
+                                text: isConfirmed[currentPage] ? "Proxima pergunta" : "Responder",
+                                onPressed: responses[currentPage] == -1
+                                    ? null
+                                    : isConfirmed[currentPage]
+                                        ? navigateToNextOrResultPage
+                                        : confirmQuestion,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                }),
+              ),
+            ),
+        ],
       ),
     );
   }
