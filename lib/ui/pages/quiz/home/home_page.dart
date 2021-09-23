@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../data/dummy_data/quest_list.dart';
+import '../../../../data/dummy_data/quest_list.dart';
 import '../../../widgets/shared/buttons/custom_button.dart';
 import '../../pages.dart';
 

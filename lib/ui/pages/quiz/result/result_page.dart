@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-import '../../../data/dummy_data/quest_list.dart';
+import '../../../../data/dummy_data/quest_list.dart';
 import '../../pages.dart';
 
 class ResultPage extends StatelessWidget {

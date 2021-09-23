@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../data/dummy_data/quest_list.dart';
+import '../../../../data/dummy_data/quest_list.dart';
 import '../../../widgets/question/question.dart';
 import '../../../widgets/shared/shared_widgets.dart';
 import '../../pages.dart';
