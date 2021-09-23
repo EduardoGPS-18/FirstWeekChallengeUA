@@ -5,7 +5,7 @@ class CustomCheckBox extends StatefulWidget {
   final Color borderColor;
   final IconData? icon;
   final bool selected, active;
-  final void Function(bool) onClick;
+  final void Function(bool)? onClick;
 
   const CustomCheckBox({
     Key? key,
@@ -26,11 +26,7 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: widget.active
-          ? () {
-              widget.onClick(widget.selected);
-            }
-          : null,
+      onTap: widget.active && widget.onClick != null ? () => widget.onClick!(widget.selected) : null,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
